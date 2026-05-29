@@ -47,5 +47,12 @@ This project is built with production-style architecture principles:
 - REST APIs
 
 ---
+esg-dashboard/
+│
+├── backend/ # Django backend (API + models)
+├── frontend/ # React dashboard UI
+├── MODEL.md # Data model design
+├── DECISIONS.md # Architecture decisions
+├── TRADEOFFS.md # Design tradeoffs
 
 ## 🧩 Project Structure
