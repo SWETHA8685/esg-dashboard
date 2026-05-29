@@ -1,0 +1,78 @@
+# DECISIONS.md
+
+## 1. Multi-Tenant Architecture
+Chosen: Shared DB with organization_id
+
+Why:
+- simpler deployment
+- easier scaling for MVP
+
+Tradeoff:
+- requires strict query discipline
+
+---
+
+## 2. Scope Classification
+Chosen: Explicit storage of Scope 1/2/3
+
+Why:
+- avoids runtime recalculation
+- ensures consistent reporting
+
+Tradeoff:
+- depends on correct ingestion labeling
+
+---
+
+## 3. Unit Normalization
+Chosen: Normalize at ingestion time
+
+Why:
+- improves query performance
+- ensures consistent analytics
+
+Tradeoff:
+- changes in conversion logic require backfill
+
+---
+
+## 4. Audit Logging
+Chosen: Append-only audit log
+
+Why:
+- required for ESG compliance use cases
+- ensures traceability
+
+Tradeoff:
+- increases storage usage
+
+---
+
+## 5. Source Tracking
+Chosen: Store source metadata per record
+
+Why:
+- enables trust scoring and verification
+- supports multi-source ingestion
+
+Tradeoff:
+- does not store full raw payload always
+
+---
+
+## 6. System Scope
+Excluded:
+- real-time streaming pipelines
+- ML forecasting
+- advanced visualization layers
+
+Reason:
+Focus was on correctness, traceability, and scalable schema design rather than advanced analytics.
+
+---
+
+## 7. PM Questions I would ask
+
+- Should Scope 3 be supplier-level or aggregated?
+- Should emission factors be versioned over time?
+- Can organizations edit historical ESG data or only append corrections?
