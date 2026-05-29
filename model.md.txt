@@ -1,0 +1,136 @@
+# MODEL.md
+
+## Overview
+This ESG Dashboard models sustainability data across organizations, supporting ESG metrics tracking, Scope 1/2/3 classification, unit normalization, and full auditability of data changes.
+
+The system is designed for multi-tenant SaaS usage where each organization operates in isolation.
+
+---
+
+## Core Design Goals
+
+- Multi-tenant architecture
+- Traceable ESG data lineage (source → transformation → output)
+- Standardized ESG metric normalization
+- Audit-ready history of all changes
+- Support for Scope 1, 2, and 3 emissions classification
+
+---
+
+## Key Entities
+
+### 1. Organization (Tenant)
+Represents a company using the system.
+
+Fields:
+- id
+- name
+- industry
+- created_at
+
+---
+
+### 2. ESGRecord (Core Data Table)
+Stores ESG metrics.
+
+Fields:
+- id
+- organization_id (FK)
+- metric_name (carbon_emissions, electricity_usage, etc.)
+- value (raw value)
+- unit (kg, kWh, etc.)
+- normalized_value (standard unit representation)
+- scope (1 / 2 / 3)
+- reporting_period
+- source_id
+- created_at
+
+---
+
+### 3. DataSource
+Tracks origin of ESG data.
+
+Fields:
+- id
+- name (API / CSV / Manual / Supplier)
+- type
+- trust_score
+
+Purpose:
+Ensures traceability and source-of-truth validation.
+
+---
+
+### 4. AuditLog
+Immutable log of all changes.
+
+Fields:
+- id
+- record_id
+- action (CREATE / UPDATE / DELETE)
+- old_value
+- new_value
+- changed_by
+- timestamp
+
+Purpose:
+Provides full historical traceability for compliance.
+
+---
+
+## Multi-Tenancy Model
+
+All tables include:
+- organization_id
+
+This ensures:
+- strict data isolation
+- no cross-organization leakage
+- SaaS scalability
+
+---
+
+## Unit Normalization Strategy
+
+All ESG inputs are normalized into standard units:
+
+- Emissions → tCO2e
+- Energy → kWh
+
+Normalization is applied at ingestion time:
+- preserves original value
+- stores converted value for analytics
+
+---
+
+## Scope Classification
+
+- Scope 1 → Direct emissions (owned operations)
+- Scope 2 → Electricity consumption
+- Scope 3 → Supply chain emissions
+
+Stored explicitly for consistency and reporting stability.
+
+---
+
+## Source of Truth Tracking
+
+Each record includes:
+- source_id
+- ingestion timestamp
+- optional payload hash
+
+This ensures:
+- data provenance
+- reproducibility
+- audit compliance
+
+---
+
+## Data Flow
+
+1. Data ingested (API / CSV / Manual)
+2. Unit normalization applied
+3. Scope classification assigned
+4. Stored in ESGRecord
+5. Audit log entry created

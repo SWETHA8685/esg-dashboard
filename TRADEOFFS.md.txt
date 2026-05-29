@@ -1,0 +1,47 @@
+# TRADEOFFS.md
+
+## 1. No Real-Time Streaming
+Not implemented due to complexity.
+
+Reason:
+Batch ingestion is sufficient for ESG reporting use cases.
+
+---
+
+## 2. No Advanced Data Lineage UI
+Not visualized as a graph.
+
+Reason:
+Audit logs already provide sufficient traceability.
+
+---
+
+## 3. No ML Forecasting
+Not included.
+
+Reason:
+System focuses on correctness and compliance, not prediction.
+
+---
+
+## 4. Simplified RBAC
+Basic access control only.
+
+Reason:
+Priority was data model integrity over authentication complexity.
+
+---
+
+## 5. No Event-Driven Architecture
+Not implemented.
+
+Reason:
+System is monolithic for MVP simplicity.
+
+---
+
+## 6. UI vs Backend Tradeoff
+UI is functional but minimal.
+
+Reason:
+Evaluation focuses on system design and data modeling rather than UI polish.
